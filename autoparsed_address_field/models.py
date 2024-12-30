@@ -117,9 +117,11 @@ class Address(models.Model):
 
             # Construct formatted address
             self.formatted = (
-                f"{self.address_line_1}"
-                f"{', ' + self.address_line_2 if self.address_line_2 else ''}, "
-                f"{locality_name}, {state_name} {postal_code}".strip(", ").upper()
+                f"{self.address_line_1 or ''}"
+                f"{', ' + (self.address_line_2 or '') if self.address_line_2 else ''}, "
+                f"{locality_name or ''}, {state_name or ''} {postal_code or ''}".strip(
+                    ", "
+                ).upper()
             )
 
             # Set latitude and longitude from raw location data
@@ -150,9 +152,9 @@ class Address(models.Model):
         if parsed:
             # Construct formatted address
             self.formatted = (
-                f"{parsed.get('address_line_1', '')}"
-                f"{', ' + parsed.get('address_line_2', '') if parsed.get('address_line_2') else ''}, "
-                f"{parsed.get('city', '')}, {parsed.get('state', '')} {parsed.get('postal_code', '')}".strip(
+                f"{parsed.get('address_line_1', '') or ''}"
+                f"{', ' + (parsed.get('address_line_2') or '') if parsed.get('address_line_2') else ''}, "
+                f"{parsed.get('city', '') or ''}, {parsed.get('state', '') or ''} {parsed.get('postal_code', '') or ''}".strip(
                     ", "
                 )
             )
