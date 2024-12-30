@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+recursive-include autoparsed_address_field/migrations *
+recursive-include autoparsed_address_field/static *
+recursive-include autoparsed_address_field/templates *
