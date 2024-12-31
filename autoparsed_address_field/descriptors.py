@@ -1,4 +1,8 @@
+import logging
+
 from .models import Address
+
+logger = logging.getLogger(__name__)
 
 
 class AddressDescriptor:
@@ -23,7 +27,7 @@ class AddressDescriptor:
             return None
         except AttributeError as e:
             # Log the error for debugging purposes
-            print(f"Error in AddressDescriptor __get__: {e}")
+            logger.error(f"Error in AddressDescriptor __get__: {e}")
             return None
         except Address.DoesNotExist:
             # Handle the case where the Address object is deleted but the reference remains

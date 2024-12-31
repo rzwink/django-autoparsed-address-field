@@ -91,3 +91,14 @@ class AddressModelTest(TestCase):
         """
         address = Address.objects.create()
         self.assertEqual(str(address), "Unnamed Address")
+
+    def test_unsupported_geocoding_provider(self):
+        """
+        Test that a ValueError is raised for unsupported geocoding providers.
+        """
+        with self.settings(ADDRESS_GEOCODER_PROVIDER="unsupported_provider"):
+            address = Address(raw="123 Mock St, Mock City, MO")
+            with self.assertRaises(ValueError) as context:
+                address.parse_address()
+
+            self.assertIn("Unsupported geocoding provider", str(context.exception))
