@@ -12,5 +12,5 @@ class AutoParsedAddressFieldConfig(AppConfig):
     verbose_name = "Address Management"
 
     def ready(self):
-        logger.info("AutoParsedAddressFieldConfig ready")
+        logger.debug("AutoParsedAddressFieldConfig ready")
         from .signals import address_parsed

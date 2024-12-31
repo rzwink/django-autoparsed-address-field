@@ -5,6 +5,7 @@ from django.core.management import call_command
 if not settings.configured:
     settings.configure(
         INSTALLED_APPS=[
+            "django.contrib.admin",
             "django.contrib.contenttypes",
             "django.contrib.auth",
             "autoparsed_address_field",

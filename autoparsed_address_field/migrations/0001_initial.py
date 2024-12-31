@@ -61,7 +61,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("address_line_1", models.CharField(max_length=255)),
+                (
+                    "address_line_1",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
                 (
                     "address_line_2",
                     models.CharField(blank=True, max_length=255, null=True),

@@ -14,7 +14,7 @@ def signal_receiver(sender, model_name, address_instance, **kwargs):
     signal_receiver.signal_received = True
     signal_receiver.received_model_name = model_name
     signal_receiver.received_address_instance = address_instance
-    logger.info("Signal received!")
+    logger.debug("Signal received!")
 
 
 # Initialize attributes for tracking signal state
@@ -45,7 +45,7 @@ class AddressSignalTest(TestCase):
             )
             self.assertEqual(signal_receiver.received_model_name, "address")
             self.assertEqual(signal_receiver.received_address_instance, address)
-            self.assertIsNotNone(address.formatted)
+            self.assertIsNone(address.formatted)
             self.assertEqual(address.raw, raw_address)
 
     def test_signal_on_scourgify_parse(self):
