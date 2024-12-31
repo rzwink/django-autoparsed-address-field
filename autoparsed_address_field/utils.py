@@ -1,7 +1,7 @@
 from autoparsed_address_field.models import Address, Locality, State, Country
 
 
-def create_address_from_keys(address_data, skip_parsing=True):
+def create_address_from_keys(address_data, skip_parsing=False):
     """
     Creates and saves an Address instance directly from a dictionary
     where keys match the Address model structure.

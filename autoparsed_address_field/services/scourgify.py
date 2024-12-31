@@ -12,6 +12,7 @@ class ScourgifyGeocodingService:
     def parse(self, address_instance):
         try:
             parsed = normalize_address_record(address_instance.raw)
+            print(parsed)
         except UnParseableAddressError as e:
             logger.error(
                 f"Scourgify could not parse the address: {address_instance.raw} {e}"
