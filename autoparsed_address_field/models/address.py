@@ -26,12 +26,13 @@ class Address(models.Model):
     class Meta:
         verbose_name_plural = "Addresses"
 
-    def save(self, *args, **kwargs):
-        if self.raw:
-            try:
-                self.parse_address()
-            except Exception as e:
-                logger.error(f"Error parsing address: {e}")
+    def save(self, *args, skip_parsing=False, **kwargs):
+        if not skip_parsing:
+            if self.raw:
+                try:
+                    self.parse_address()
+                except Exception as e:
+                    logger.error(f"Error parsing address: {e}")
         super().save(*args, **kwargs)
         self._send_parsed_signal()
 
