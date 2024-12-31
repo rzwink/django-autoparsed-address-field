@@ -134,10 +134,50 @@ from .models import YourModel
 class YourModelAdmin(AutoParsedAddressAdminMixin, admin.ModelAdmin):
     list_display = ("id", "address")
 ```
-
 #### Admin Behavior:
 - **New Records**: Displays a text input for raw address entry.
 - **Existing Records**: Displays a dropdown for selecting related `Address` objects.
+
+---
+### 6. Using the `address_parsed` Signal
+
+The `address_parsed` signal allows you to hook into the address parsing process. This can be useful if you want to perform additional actions, such as logging, updating related models, or triggering external services when an address is successfully parsed.
+
+#### Example Usage:
+
+```python
+from autoparsed_address_field.signals import address_parsed
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Define a signal handler
+def handle_address_parsed(sender, model_name, address_instance, **kwargs):
+    """
+    Signal handler for the `address_parsed` signal.
+
+    Args:
+        sender: The class of the sender.
+        model_name: The name of the model where the address was parsed.
+        address_instance: The instance of the Address model that was parsed.
+        **kwargs: Additional keyword arguments.
+    """
+    logger.info(f"Address parsing completed for model: {model_name}")
+    logger.info(f"Formatted Address: {address_instance.formatted}")
+    logger.info(f"Latitude: {address_instance.latitude}, Longitude: {address_instance.longitude}")
+    # Perform additional actions here, such as notifying a user or updating related data
+
+# Connect the signal to the handler
+address_parsed.connect(handle_address_parsed, dispatch_uid="handle_address_parsed_signal")
+```
+
+#### Explanation:
+1. **Signal Handler**: The `handle_address_parsed` function is invoked whenever the signal is dispatched. It receives the sender, the model name, the parsed address instance, and any additional arguments.
+2. **Logging**: The handler logs the parsed address details, including the formatted address, latitude, and longitude.
+3. **Connecting the Signal**: The `address_parsed.connect` method connects the handler to the signal. The `dispatch_uid` ensures the handler is not connected multiple times.
+
+This setup allows you to extend the functionality of the package by reacting to successful address parsing events in a modular way.
+
 
 ---
 
@@ -145,11 +185,38 @@ class YourModelAdmin(AutoParsedAddressAdminMixin, admin.ModelAdmin):
 
 ### Geocoding Provider
 
-Configure the geocoding provider in your `settings.py` file:
+The `ADDRESS_GEOCODER_PROVIDER` setting determines which geocoding provider the package uses to parse and normalize addresses. This flexibility allows you to select the provider that best suits your needs based on data accuracy, cost, or specific features.
+
+Add the following to your `settings.py` file to configure the geocoding provider:
 
 ```python
 ADDRESS_GEOCODER_PROVIDER = "arcgis"  # Options: "arcgis", "scourgify"
 ```
+
+#### Rationale for Choosing a Provider
+
+| Provider      | Description                                                                 | Rationale                                                                                     |
+|---------------|-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| **ArcGIS**    | Leverages Esri's ArcGIS geocoding service via the `geopy` library.          | Best for applications requiring high accuracy, global coverage, and detailed geospatial data. |
+| **Scourgify** | Uses `usaddress-scourgify` for parsing and normalizing US addresses.        | Ideal for US-based projects where simplicity and no external dependencies are preferred.      |
+
+#### Example Configuration:
+
+```python
+# settings.py
+
+ADDRESS_GEOCODER_PROVIDER = "arcgis"  # Use Esri's ArcGIS geocoder
+```
+
+#### Switching Between Providers
+
+You can easily switch between providers by updating the `ADDRESS_GEOCODER_PROVIDER` setting. For example, to use Scourgify:
+
+```python
+ADDRESS_GEOCODER_PROVIDER = "scourgify"  # Use Scourgify for address parsing
+```
+
+This modular approach allows your application to adapt to different geographic or business requirements without changing your codebase.
 
 ---
 

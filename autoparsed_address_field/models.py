@@ -1,9 +1,12 @@
-import json
-
 from django.db import models
 from geopy.geocoders import ArcGIS
 from scourgify import normalize_address_record
 from uszipcode import SearchEngine
+import logging
+
+from .signals import address_parsed
+
+logger = logging.getLogger(__name__)
 
 
 class Country(models.Model):
@@ -77,6 +80,8 @@ class Address(models.Model):
             self.parse_address()
         super().save(*args, **kwargs)
 
+        self._send_parsed_signal()
+
     def parse_address(self):
         """
         Parses the raw address using the selected geocoding provider.
@@ -91,6 +96,18 @@ class Address(models.Model):
             self._parse_with_scourgify()
         else:
             raise ValueError(f"Unsupported geocoding provider: {provider}")
+
+    def _send_parsed_signal(self):
+        """
+        Sends the address_parsed signal when parsing is successful.
+        """
+        logger.info("sending signal")
+
+        address_parsed.send(
+            sender=self.__class__,
+            model_name=self._meta.model_name,
+            address_instance=self,
+        )
 
     def _parse_with_arcgis(self):
         """
