@@ -1,30 +1,41 @@
 import logging
 
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
-from ..signals import address_parsed
 from ..services import ArcGISGeocodingService, ScourgifyGeocodingService
+from ..signals import address_parsed
+from ..utils.uuid import generate_uuid_from_address
+
+UNNAMED_ADDRESS = "Unnamed Address"
 
 logger = logging.getLogger(__name__)
 
 
 class Address(models.Model):
-    address_line_1 = models.CharField(max_length=255, blank=True, null=True)
-    address_line_2 = models.CharField(max_length=255, blank=True, null=True)
+    address_line_1 = models.CharField(
+        _("Address Line 1"), max_length=255, blank=True, null=True
+    )
+    address_line_2 = models.CharField(
+        _("Address Line 2"), max_length=255, blank=True, null=True
+    )
     locality = models.ForeignKey(
         "Locality",
         on_delete=models.SET_NULL,
         related_name="addresses",
         blank=True,
         null=True,
+        verbose_name=_("Locality"),
     )
-    raw = models.TextField(blank=True, null=True)  # Unprocessed input
-    formatted = models.TextField(blank=True, null=True)  # Parsed address output
-    latitude = models.FloatField(blank=True, null=True)
-    longitude = models.FloatField(blank=True, null=True)
+    raw = models.TextField(_("Raw Address"), blank=True, null=True)
+    formatted = models.TextField(_("Formatted Address"), blank=True, null=True)
+    latitude = models.FloatField(_("Latitude"), blank=True, null=True)
+    longitude = models.FloatField(_("Longitude"), blank=True, null=True)
+
+    address_id = models.TextField(blank=True, db_index=True)
 
     class Meta:
-        verbose_name_plural = "Addresses"
+        verbose_name_plural = _("Addresses")
 
     def save(self, *args, skip_parsing=False, **kwargs):
         if not skip_parsing:
@@ -32,7 +43,11 @@ class Address(models.Model):
                 try:
                     self.parse_address()
                 except Exception as e:
-                    logger.error(f"Error parsing address: {e}")
+                    logger.error(_("Error parsing address: %s"), e)
+        print(str(self))
+        if str(self) != UNNAMED_ADDRESS:
+            self.address_id = generate_uuid_from_address(self)
+
         super().save(*args, **kwargs)
         self._send_parsed_signal()
 
@@ -56,7 +71,7 @@ class Address(models.Model):
         elif provider == "scourgify":
             return ScourgifyGeocodingService()
         else:
-            raise ValueError(f"Unsupported geocoding provider: {provider}")
+            raise ValueError(_("Unsupported geocoding provider: %s") % provider)
 
     def __str__(self):
-        return self.formatted if self.formatted else (self.raw or "Unnamed Address")
+        return self.formatted if self.formatted else (self.raw or UNNAMED_ADDRESS)

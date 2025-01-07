@@ -17,8 +17,11 @@ if not settings.configured:
             }
         },
         SECRET_KEY="test_secret_key",
+        ADDRESS_SALT="test_salt",
     )
     django.setup()
 
 # Set up the test environment and run migrations
+call_command("makemigrations")
+
 call_command("migrate")

@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-03 08:57-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+#: autoparsed_address_field/apps.py:13
+msgid "Address Management"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:15
+msgid "Address Line 1"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:18
+msgid "Address Line 2"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:26
+msgid "Locality"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:28
+msgid "Raw Address"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:29
+msgid "Formatted Address"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:30
+msgid "Latitude"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:31
+msgid "Longitude"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:34
+msgid "Addresses"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:42
+#, python-format
+msgid "Error parsing address: %s"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:66
+#, python-format
+msgid "Unsupported geocoding provider: %s"
+msgstr ""
+
+#: autoparsed_address_field/models/address.py:104
+msgid "Unnamed Address"
+msgstr ""
+
+#: autoparsed_address_field/models/country.py:11
+#: autoparsed_address_field/models/locality.py:10
+#: autoparsed_address_field/models/state.py:10
+msgid "Name"
+msgstr ""
+
+#: autoparsed_address_field/models/country.py:16
+#: autoparsed_address_field/models/state.py:11
+msgid "Code"
+msgstr ""
+
+#: autoparsed_address_field/models/country.py:19
+msgid "ISO 3166-1 alpha-2 or alpha-3 codes"
+msgstr ""
+
+#: autoparsed_address_field/models/country.py:23
+msgid "Countries"
+msgstr ""
+
+#: autoparsed_address_field/models/locality.py:12
+msgid "Postal Code"
+msgstr ""
+
+#: autoparsed_address_field/models/locality.py:18
+msgid "State"
+msgstr ""
+
+#: autoparsed_address_field/models/locality.py:23
+msgid "Localities"
+msgstr ""
+
+#: autoparsed_address_field/models/state.py:16
+msgid "Country"
+msgstr ""
+
+#: autoparsed_address_field/models/state.py:21
+msgid "States"
+msgstr ""

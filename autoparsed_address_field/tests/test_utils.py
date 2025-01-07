@@ -1,5 +1,7 @@
 from django.test import TestCase
-from autoparsed_address_field.utils import create_address_from_keys
+from autoparsed_address_field.utils.create_address_from_keys import (
+    create_address_from_keys,
+)
 
 
 class CreateAddressFromKeysTest(TestCase):

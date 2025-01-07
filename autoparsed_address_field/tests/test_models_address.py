@@ -1,6 +1,6 @@
 from django.test import TestCase
+
 from ..models import Address, Country, State, Locality
-from ..services import ArcGISGeocodingService, ScourgifyGeocodingService
 
 
 class AddressModelTest(TestCase):
@@ -30,6 +30,8 @@ class AddressModelTest(TestCase):
         self.assertIn("WASHINGTON", address.formatted.upper())
         self.assertIsNotNone(address.latitude)
         self.assertIsNotNone(address.longitude)
+        self.assertIsNotNone(address.address_id)
+        self.assertEqual(address.address_id, "0c837592-b979-e9aa-d642-549a1a90efe6")
 
     def test_save_with_valid_raw_address_scourgify(self):
         """
